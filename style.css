@@ -20,7 +20,7 @@ body{
 .controls button{background:transparent;border:none;font-size:18px;cursor:pointer}
 
 .main{display:flex;gap:16px;margin-top:12px}
-.left{width:340px}
+.left{width:350px}
 .right{flex:1}
 
 .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(16,24,40,0.06);margin-bottom:14px}
@@ -29,7 +29,7 @@ body{
 .add-row button{padding:9px 12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
 
 #watchlist{list-style:none;padding:0;margin-top:12px}
-#watchlist li{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;border:1px solid #eef2ff;margin-bottom:8px;background:linear-gradient(180deg,#fff,#fbfdff)}
+#watchlist li{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-bottom:8px;background:linear-gradient(180deg,#fff,#fbfdff)}
 #watchlist li .meta{font-size:13px;color:var(--muted)}
 #watchlist li button{background:transparent;border:none;color:var(--danger);cursor:pointer}
 
@@ -47,8 +47,6 @@ body{
 .alerts ul{list-style:none;padding:0;margin-top:10px}
 .alerts li{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;border:1px solid #fff3f2;background:#fff}
 
-.footer{text-align:center;color:var(--muted);margin-top:12px;}
-
 /* Dark mode */
 body.dark{
   --bg:#071028;--card:#071728;--text:#e6eef8;--muted:#90a7bd;--accent:#61dafb;--danger:#ff7b7b;
@@ -56,3 +54,5 @@ body.dark{
 }
 body.dark .card{box-shadow:0 6px 18px rgba(2,6,23,0.6)}
 body.dark .add-row input,body.dark .add-row select{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:var(--text)}
+
+.footer{text-align:center;color:var(--muted);margin-top:12px;}
