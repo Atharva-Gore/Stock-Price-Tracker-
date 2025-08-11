@@ -2,55 +2,61 @@ body {
   font-family: Arial, sans-serif;
   background: #0f172a;
   color: white;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   padding: 20px;
 }
 
 .container {
-  max-width: 800px;
-  margin: auto;
+  max-width: 700px;
+  width: 100%;
 }
 
-.search-bar {
+h1 {
+  text-align: center;
+}
+
+.search-section {
   display: flex;
-  justify-content: center;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
-input {
-  padding: 8px;
+.search-section input {
+  flex: 1;
+  padding: 10px;
+  border: none;
   border-radius: 5px;
-  border: none;
-  width: 60%;
 }
 
-button {
-  padding: 8px 12px;
-  background: #2563eb;
-  color: white;
+.search-section button {
+  padding: 10px 15px;
+  background: #3b82f6;
   border: none;
+  color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #1e40af;
+.price-section {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 canvas {
-  margin-top: 20px;
   background: white;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
-.toast {
+#toast {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #16a34a;
+  right: 20px;
+  background: #22c55e;
   color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 10px 15px;
+  border-radius: 5px;
   display: none;
 }
