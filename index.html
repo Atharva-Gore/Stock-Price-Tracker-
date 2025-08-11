@@ -1,96 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Real-time Price Tracker</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock & Crypto Price Tracker</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <h1>📈 Real-time Price Tracker</h1>
-      <div class="controls">
-        <button id="themeToggle" title="Toggle dark/light">🌙</button>
-      </div>
-    </header>
+  <div class="container">
+    <h1>📈 Stock & Crypto Price Tracker</h1>
 
-    <main class="main">
-      <aside class="left">
-        <div class="card">
-          <h3>Watchlist</h3>
-          <div class="add-row">
-            <select id="assetType">
-              <option value="crypto">Crypto (CoinGecko)</option>
-              <option value="stock">Stock (Finnhub)</option>
-            </select>
-            <input id="assetInput" placeholder="e.g. bitcoin OR AAPL (stocks)" />
-            <input id="finnhubKey" placeholder="Finnhub API key (for stocks, optional)" />
-            <button id="addAssetBtn">+ Add</button>
-          </div>
+    <div class="search-bar">
+      <input type="text" id="assetInput" placeholder="Enter symbol or coin (e.g. AAPL or bitcoin)">
+      <button onclick="loadAsset()">Track</button>
+    </div>
 
-          <div class="settings">
-            <label>Refresh:
-              <select id="refreshInterval">
-                <option value="15">15s</option>
-                <option value="30">30s</option>
-                <option value="60" selected>60s</option>
-                <option value="300">5m</option>
-              </select>
-            </label>
-            <label>Chart window:
-              <select id="timeRange">
-                <option value="1">1d</option>
-                <option value="7" selected>7d</option>
-                <option value="30">30d</option>
-                <option value="90">90d</option>
-                <option value="365">1y</option>
-              </select>
-            </label>
-          </div>
+    <div class="price-display">
+      <h2 id="assetName">Loading...</h2>
+      <p id="price">Price: $0.00</p>
+    </div>
 
-          <ul id="watchlist"></ul>
-        </div>
-
-        <div class="card alerts">
-          <h3>Alerts</h3>
-          <p>Set percent change alert (compared to baseline)</p>
-          <div class="alert-row">
-            <input id="alertPct" type="number" placeholder="e.g. 5" />
-            <select id="alertDirection">
-              <option value="above">Above</option>
-              <option value="below">Below</option>
-            </select>
-            <button id="setAlertBtn">Set Alert</button>
-          </div>
-          <ul id="alertsList"></ul>
-        </div>
-      </aside>
-
-      <section class="right">
-        <div class="card chart-card">
-          <h3 id="chartTitle">Loading chart...</h3>
-          <canvas id="priceChart" height="260"></canvas>
-        </div>
-
-        <div class="card details" id="assetDetails" hidden>
-          <h4 id="assetName"></h4>
-          <p id="assetPrice"></p>
-          <p id="assetChange"></p>
-          <div class="small">Last updated: <span id="lastUpdated">-</span></div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <small>Data: CoinGecko (crypto, no key) • Finnhub (stocks optional). Alerts use browser notifications + sound.</small>
-    </footer>
+    <canvas id="priceChart"></canvas>
   </div>
 
-  <!-- toast container -->
-  <div id="toastContainer" aria-live="polite"></div>
+  <audio id="alertSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+
+  <div id="toast" class="toast">Price Alert!</div>
 
   <script src="script.js"></script>
 </body>
