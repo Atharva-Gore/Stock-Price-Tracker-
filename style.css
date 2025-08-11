@@ -47,6 +47,10 @@ body{
 .alerts ul{list-style:none;padding:0;margin-top:10px}
 .alerts li{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;border:1px solid #fff3f2;background:#fff}
 
+/* toast */
+#toastContainer{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+.toast{background:#111;color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.2);opacity:0.98}
+
 /* Dark mode */
 body.dark{
   --bg:#071028;--card:#071728;--text:#e6eef8;--muted:#90a7bd;--accent:#61dafb;--danger:#ff7b7b;
@@ -56,3 +60,7 @@ body.dark .card{box-shadow:0 6px 18px rgba(2,6,23,0.6)}
 body.dark .add-row input,body.dark .add-row select{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:var(--text)}
 
 .footer{text-align:center;color:var(--muted);margin-top:12px;}
+@media (max-width:900px){
+  .main{flex-direction:column}
+  .left{width:100%}
+}
