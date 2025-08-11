@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Price Tracker Dashboard</title>
+  <title>Real-time Price Tracker</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,25 +11,23 @@
 <body>
   <div class="app">
     <header class="topbar">
-      <h1>📈 Price Tracker Dashboard</h1>
+      <h1>📈 Real-time Price Tracker</h1>
       <div class="controls">
         <button id="themeToggle" title="Toggle dark/light">🌙</button>
       </div>
     </header>
 
     <main class="main">
-      <section class="left">
+      <aside class="left">
         <div class="card">
           <h3>Watchlist</h3>
-
           <div class="add-row">
             <select id="assetType">
               <option value="crypto">Crypto (CoinGecko)</option>
               <option value="stock">Stock (Finnhub)</option>
             </select>
-
-            <input id="assetInput" placeholder="e.g. bitcoin or AAPL" />
-            <input id="finnhubKey" placeholder="Finnhub API key (for stocks)" title="Needed only for stocks" />
+            <input id="assetInput" placeholder="e.g. bitcoin OR AAPL (stocks)" />
+            <input id="finnhubKey" placeholder="Finnhub API key (for stocks, optional)" />
             <button id="addAssetBtn">+ Add</button>
           </div>
 
@@ -58,7 +56,7 @@
 
         <div class="card alerts">
           <h3>Alerts</h3>
-          <p>Set percent change alert (relative to baseline)</p>
+          <p>Set percent change alert (compared to baseline)</p>
           <div class="alert-row">
             <input id="alertPct" type="number" placeholder="e.g. 5" />
             <select id="alertDirection">
@@ -69,12 +67,12 @@
           </div>
           <ul id="alertsList"></ul>
         </div>
-      </section>
+      </aside>
 
       <section class="right">
         <div class="card chart-card">
-          <h3 id="chartTitle">Select asset to view chart</h3>
-          <canvas id="priceChart" height="240"></canvas>
+          <h3 id="chartTitle">Loading chart...</h3>
+          <canvas id="priceChart" height="260"></canvas>
         </div>
 
         <div class="card details" id="assetDetails" hidden>
@@ -87,9 +85,12 @@
     </main>
 
     <footer class="footer">
-      <small>Data: CoinGecko (crypto) • Finnhub (stocks optional).</small>
+      <small>Data: CoinGecko (crypto, no key) • Finnhub (stocks optional). Alerts use browser notifications + sound.</small>
     </footer>
   </div>
+
+  <!-- toast container -->
+  <div id="toastContainer" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
