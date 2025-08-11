@@ -10,23 +10,21 @@
 <body>
   <div class="container">
     <h1>📈 Stock & Crypto Price Tracker</h1>
-
-    <div class="search-bar">
-      <input type="text" id="assetInput" placeholder="Enter symbol or coin (e.g. AAPL or bitcoin)">
-      <button onclick="loadAsset()">Track</button>
+    <div class="search-section">
+      <input type="text" id="symbolInput" placeholder="Enter Symbol (e.g., AAPL, BINANCE:BTCUSDT)">
+      <button id="trackBtn">Track</button>
     </div>
-
-    <div class="price-display">
+    <div class="price-section">
       <h2 id="assetName">Loading...</h2>
-      <p id="price">Price: $0.00</p>
+      <p id="currentPrice">Price: --</p>
+      <p id="priceChange">Change: --</p>
     </div>
-
     <canvas id="priceChart"></canvas>
   </div>
 
-  <audio id="alertSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+  <audio id="alertSound" src="https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3"></audio>
 
-  <div id="toast" class="toast">Price Alert!</div>
+  <div id="toast"></div>
 
   <script src="script.js"></script>
 </body>
