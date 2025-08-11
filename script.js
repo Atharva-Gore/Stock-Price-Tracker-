@@ -1,89 +1,40 @@
 const apiKey = "d2co53pr01qihtcsnltgd2co53pr01qihtcsnlu0";
+const symbolInput = document.getElementById("symbolInput");
+const trackBtn = document.getElementById("trackBtn");
+const assetName = document.getElementById("assetName");
+const currentPrice = document.getElementById("currentPrice");
+const priceChange = document.getElementById("priceChange");
+const alertSound = document.getElementById("alertSound");
+const toast = document.getElementById("toast");
+
 let chart;
+let chartData = [];
+let labels = [];
 let lastPrice = null;
 
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
+function showToast(message, color = "#22c55e") {
+  toast.innerText = message;
+  toast.style.background = color;
   toast.style.display = "block";
-  setTimeout(() => {
-    toast.style.display = "none";
-  }, 3000);
+  setTimeout(() => toast.style.display = "none", 3000);
 }
 
-async function fetchPrice(asset) {
-  let price = null;
-  let name = asset.toUpperCase();
-
-  if (/^[a-zA-Z]+$/.test(asset) && asset.length <= 5) {
-    // Stock (Finnhub)
-    const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${asset}&token=${apiKey}`);
-    const data = await res.json();
-    price = data.c; // Current price
-  } else {
-    // Crypto (CoinGecko)
-    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${asset}&vs_currencies=usd`);
-    const data = await res.json();
-    price = data[asset]?.usd;
-  }
-
-  return { name, price };
-}
-
-function updateChart(price) {
-  const time = new Date().toLocaleTimeString();
-  chart.data.labels.push(time);
-  chart.data.datasets[0].data.push(price);
-
-  if (chart.data.labels.length > 20) {
-    chart.data.labels.shift();
-    chart.data.datasets[0].data.shift();
-  }
-
-  chart.update();
-}
-
-function playAlert() {
-  document.getElementById("alertSound").play();
-}
-
-async function loadAsset() {
-  const asset = document.getElementById("assetInput").value.trim().toLowerCase() || "bitcoin";
-  const { name, price } = await fetchPrice(asset);
-
-  if (!price) {
-    alert("Asset not found!");
-    return;
-  }
-
-  document.getElementById("assetName").textContent = name;
-  document.getElementById("price").textContent = `Price: $${price}`;
-
-  if (lastPrice && price !== lastPrice) {
-    playAlert();
-    showToast(`Price changed! New: $${price}`);
-  }
-  lastPrice = price;
-
-  updateChart(price);
-}
-
-// Initialize chart
-function initChart() {
+function createChart() {
   const ctx = document.getElementById("priceChart").getContext("2d");
   chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: [],
+      labels: labels,
       datasets: [{
-        label: "Price USD",
-        data: [],
+        label: "Price",
+        data: chartData,
         borderColor: "#3b82f6",
         fill: false
       }]
     },
     options: {
       responsive: true,
+      animation: false,
       scales: {
         x: { display: true },
         y: { display: true }
@@ -92,9 +43,50 @@ function initChart() {
   });
 }
 
+async function fetchPrice(symbol) {
+  try {
+    const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.c) throw new Error("Invalid symbol");
+
+    assetName.textContent = symbol;
+    currentPrice.textContent = `Price: $${data.c}`;
+    priceChange.textContent = `Change: ${data.d} (${data.dp}%)`;
+
+    const now = new Date().toLocaleTimeString();
+    labels.push(now);
+    chartData.push(data.c);
+    if (labels.length > 20) {
+      labels.shift();
+      chartData.shift();
+    }
+    chart.update();
+
+    if (lastPrice !== null && data.c > lastPrice * 1.02) {
+      alertSound.play();
+      showToast(`🚀 ${symbol} jumped above 2%!`);
+    }
+    lastPrice = data.c;
+  } catch (err) {
+    showToast(err.message, "#ef4444");
+  }
+}
+
+function startTracking(symbol) {
+  labels = [];
+  chartData = [];
+  lastPrice = null;
+  if (chart) chart.destroy();
+  createChart();
+  fetchPrice(symbol);
+  setInterval(() => fetchPrice(symbol), 5000);
+}
+
+trackBtn.addEventListener("click", () => {
+  const symbol = symbolInput.value.trim().toUpperCase();
+  if (symbol) startTracking(symbol);
+});
+
 // Auto-load default asset
-window.onload = () => {
-  initChart();
-  loadAsset();
-  setInterval(loadAsset, 5000); // Update every 5s
-};
+startTracking("AAPL");
